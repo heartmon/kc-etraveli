@@ -1,4 +1,4 @@
-import { Grid, Box } from '@mui/material';
+import { Grid, Box, CircularProgress } from '@mui/material';
 import { isEmpty, sortBy } from 'lodash';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Filter from '../components/Filter';
@@ -25,11 +25,13 @@ const MoviePage = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [sortFieldName, setSortFieldName] = useState(null);
   const [searchString, setSearchString] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const services = useContext(ServicesContext);
 
   useEffect(() => {
     services?.movieService.getMovies().then((movies) => {
       setMovies(movies);
+      setIsLoading(false);
     });
   }, [services?.movieService]);
 
@@ -50,8 +52,6 @@ const MoviePage = () => {
   const isNotFound = searchString && sortedFilteredMovies.length === 0;
 
   return <div>
-    {/* Navbar */}
-    {/* Banner */}
     <Grid container>
       <Grid item xs={12} md={6}>
         <Filter
@@ -60,6 +60,9 @@ const MoviePage = () => {
           searchString={searchString}
           onSearchTextChange={(text) => setSearchString(text)}
         />
+        {
+          isLoading ? <CircularProgress size={24} /> : null
+        }
         {
           isNotFound ? <Box sx={styles.notFound}>Not found</Box>
           : <MovieList selectedMovie={selectedMovie} movies={sortedFilteredMovies} onSelectMovie={handleSelectMovie} />          

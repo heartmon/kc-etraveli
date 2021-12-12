@@ -23,7 +23,7 @@ function App() {
       <div className="App">
         <AppBar position="static">
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Starwars
+            Star Wars
           </Typography>
         </AppBar>
         <Container sx={styles.container} maxWidth="xl">
